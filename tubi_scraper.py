@@ -227,6 +227,7 @@ def extract_ids_from_html_data(json_data):
     return list(dict.fromkeys(ids))
 
 def create_group_mapping_from_html(json_data):
+    # Kept for compatibility, though categories will be overridden to "Fast Tubi"
     mapping = {}
     container = json_data if isinstance(json_data, dict) else {}
     epg = container.get("epg", {}).get("contentIdsByContainer", {})
@@ -281,7 +282,10 @@ def create_m3u_playlist(epg_data, group_mapping):
         name   = (ch.get("title") or "Unknown").encode("utf-8", "ignore").decode("utf-8")
         tvg_id = str(ch.get("content_id", ""))
         logo   = (ch.get("images", {}).get("thumbnail") or [None])[0] or ""
-        group  = group_mapping.get(tvg_id, "Other").encode("utf-8", "ignore").decode("utf-8")
+        
+        # Changed all categories to "Fast Tubi"
+        group  = "Fast Tubi"
+        
         resources = ch.get("video_resources") or []
         if not resources:
             continue
@@ -385,3 +389,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+ 
